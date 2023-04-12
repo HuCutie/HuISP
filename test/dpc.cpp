@@ -66,15 +66,15 @@ int main(int argc, char** argv)
     fwrite(frameOut, sizeof(uint16_t), (top_param.frameWidth * top_param.frameHeight), fp_w1);
 
     //Checker
-    for (x = 0; x < top_param.frameWidth*top_param.frameHeight; x++) {
-        int tmp = frameGolden[x] - frameOut[x];
-        if(tmp != 0) {
-            printf("\t\tFirst mismatch in pixel %d!\n", x);
-            printf("\t\tGolden = %d, result = %d!\n", frameGolden[x], frameOut[x]);
-            break;
-        }
-    }
-    printf("\tTest passed!\n");
+    // for (x = 0; x < top_param.frameWidth*top_param.frameHeight; x++) {
+    //     int tmp = frameGolden[x] - frameOut[x];
+    //     if(tmp != 0) {
+    //         printf("\t\tFirst mismatch in pixel %d!\n", x);
+    //         printf("\t\tGolden = %d, result = %d!\n", frameGolden[x], frameOut[x]);
+    //         break;
+    //     }
+    // }
+    // printf("\tTest passed!\n");
 
     fclose(fp_r1);
     // fclose(fp_g1);

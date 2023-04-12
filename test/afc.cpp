@@ -53,7 +53,7 @@ int main(int argc, char** argv)
     cout << "hls_CountMF =" << afc_param.CountMF << endl;
 
     //Out
-    printf("\tTest passed!\n");
+    // printf("\tTest passed!\n");
 
     fclose(fp_r1);
 

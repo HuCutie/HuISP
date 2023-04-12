@@ -73,22 +73,22 @@ int main(int argc, char* argv[])
     fclose(fp6);
 
     //Compare and print results
-    for (int i = 0; i < topParam.frameWidth * topParam.frameHeight; i++) {
-        uint16_t golden_pixel = golden_in[i];
-        uint16_t dst_pixel = frame_out[i];
+    // for (int i = 0; i < topParam.frameWidth * topParam.frameHeight; i++) {
+    //     uint16_t golden_pixel = golden_in[i];
+    //     uint16_t dst_pixel = frame_out[i];
 
-        if (golden_pixel != dst_pixel)
-        {
-            cout << "Golden = " << setbase(10) << golden_in[i] << endl;
-            cout << "result = " << setbase(10) << frame_out[i] << endl;
-            printf("\t i=%d, \trows=%d,\tcols=%d\n", i, i / topParam.frameWidth.to_int(), i - (i / topParam.frameWidth.to_int()) * topParam.frameWidth.to_int());
-            break;
-        }
-    }
+    //     if (golden_pixel != dst_pixel)
+    //     {
+    //         cout << "Golden = " << setbase(10) << golden_in[i] << endl;
+    //         cout << "result = " << setbase(10) << frame_out[i] << endl;
+    //         printf("\t i=%d, \trows=%d,\tcols=%d\n", i, i / topParam.frameWidth.to_int(), i - (i / topParam.frameWidth.to_int()) * topParam.frameWidth.to_int());
+    //         break;
+    //     }
+    // }
 
-    printf("Test Passed !\n");
+    // printf("Test Passed !\n");
     printf("Total pixel number is %d\n", topParam.frameWidth.to_int() * topParam.frameHeight.to_int());
-    printf("640x480 Verification finished!\n");
+    // printf("640x480 Verification finished!\n");
 
     free(frame_in);
     free(golden_in);

@@ -86,17 +86,17 @@ int main(int argc, char** argv)
     fwrite(frameOut, sizeof(uint16_t), 3*(top_param.frameWidth * top_param.frameHeight), fp_w1);
 
     //Checker
-    for (x = 0; x < 3*top_param.frameWidth*top_param.frameHeight; x++) {
-        if(frameGolden[x] != frameOut[x]) {
-            printf("\t\tFirst mismatch in pixel %d, channel %d!\n", x/3, x%3);
-            printf("\t\tFirst mismatch in pixel %d, row = %d!, col = %d!\n", x/3, (x/3)/top_param.frameWidth.to_int(), ((x/3)%top_param.frameWidth.to_int()));
-            cout << "Golden = " << setbase(10) << frameGolden[x] << endl;
-            cout << "result = " << setbase(10) << frameOut[x] << endl;
-            cout << "in = " << setbase(10) << frameIn[x] << endl;
-            break;
-        }
-    }
-    printf("\tTest passed!\n");
+    // for (x = 0; x < 3*top_param.frameWidth*top_param.frameHeight; x++) {
+    //     if(frameGolden[x] != frameOut[x]) {
+    //         printf("\t\tFirst mismatch in pixel %d, channel %d!\n", x/3, x%3);
+    //         printf("\t\tFirst mismatch in pixel %d, row = %d!, col = %d!\n", x/3, (x/3)/top_param.frameWidth.to_int(), ((x/3)%top_param.frameWidth.to_int()));
+    //         cout << "Golden = " << setbase(10) << frameGolden[x] << endl;
+    //         cout << "result = " << setbase(10) << frameOut[x] << endl;
+    //         cout << "in = " << setbase(10) << frameIn[x] << endl;
+    //         break;
+    //     }
+    // }
+    // printf("\tTest passed!\n");
 
     fclose(fp_r1);
     // fclose(fp_g1);

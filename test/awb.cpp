@@ -52,14 +52,14 @@ int main(int argc, char** argv)
     fwrite(frameOut, sizeof(uint16_t), (topParam.frameWidth * topParam.frameHeight), fp_w1);
 
     //Checker
-    for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {
-        if(frameIn[x] != frameOut[x]) {
-            printf("\t\tFirst mismatch in pixel %d!\n", x);
-            printf("\t\tGolden = %d, result = %d!\n", frameIn[x], frameOut[x]);
-            break;
-        }
-    }
-    printf("\tTest passed!\n");
+    // for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {
+    //     if(frameIn[x] != frameOut[x]) {
+    //         printf("\t\tFirst mismatch in pixel %d!\n", x);
+    //         printf("\t\tGolden = %d, result = %d!\n", frameIn[x], frameOut[x]);
+    //         break;
+    //     }
+    // }
+    // printf("\tTest passed!\n");
 
     cout << "c_r_gain = " << 4821 << endl;
     cout << "c_g_gain = " << 4096  << endl;

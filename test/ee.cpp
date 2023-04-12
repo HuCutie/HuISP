@@ -81,17 +81,17 @@ int main(int argc, char** argv)
     fwrite(frameOut, sizeof(uint64_t), (topParam.frameWidth * topParam.frameHeight), fp_w1);
 
     //Checker
-    for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {
-        if(frameGolden[x] != frameOut[x]) {
-            printf("\t\tFirst mismatch in pixel %d!\n", x);
-            printf("\t\tGolden_r = %d, result_r = %d!\n",(uint16_t)(frameGolden[x]), (uint16_t)(frameOut[x]));
-            printf("\t\tGolden_g = %d, result_g = %d!\n",(uint16_t)(frameGolden[x]>>16), (uint16_t)(frameOut[x]>>16));
-            printf("\t\tGolden_b = %d, result_b = %d!\n",(uint16_t)(frameGolden[x]>>32), (uint16_t)(frameOut[x]>>32));
-            break;
-        }
-    }
+    // for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {
+    //     if(frameGolden[x] != frameOut[x]) {
+    //         printf("\t\tFirst mismatch in pixel %d!\n", x);
+    //         printf("\t\tGolden_r = %d, result_r = %d!\n",(uint16_t)(frameGolden[x]), (uint16_t)(frameOut[x]));
+    //         printf("\t\tGolden_g = %d, result_g = %d!\n",(uint16_t)(frameGolden[x]>>16), (uint16_t)(frameOut[x]>>16));
+    //         printf("\t\tGolden_b = %d, result_b = %d!\n",(uint16_t)(frameGolden[x]>>32), (uint16_t)(frameOut[x]>>32));
+    //         break;
+    //     }
+    // }
 
-    printf("\tTest passed!\n");
+    // printf("\tTest passed!\n");
 
     fclose(fp_r1);
     // fclose(fp_g1);

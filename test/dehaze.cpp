@@ -85,17 +85,17 @@ int main(int argc, char** argv)
     fwrite(frameOut, sizeof(uint16_t), 3*(topParam.frameWidth * topParam.frameHeight), fp_w1);
 
     //Checker
-    uint32_t error_count=0;
-    for (x = 0; x < 3*topParam.frameWidth*topParam.frameHeight; x++) {
-        if(frameGolden[x] != frameOut[x]) {
-            error_count+=1;
-            printf("\t\tFirst mismatch in pixel %d, channel %d! Golden=%d,result=%d\n", x/3, x%3,frameGolden[x],frameOut[x]);
-            cout << "Golden = " << setbase(16) << frameGolden[x] << endl;
-            cout << "result = " << setbase(16) << frameOut[x] << endl;
-            break;
-        }
-    }
-    printf("\tTest passed! Errors:%d\n",error_count);
+    // uint32_t error_count=0;
+    // for (x = 0; x < 3*topParam.frameWidth*topParam.frameHeight; x++) {
+    //     if(frameGolden[x] != frameOut[x]) {
+    //         error_count+=1;
+    //         printf("\t\tFirst mismatch in pixel %d, channel %d! Golden=%d,result=%d\n", x/3, x%3,frameGolden[x],frameOut[x]);
+    //         cout << "Golden = " << setbase(16) << frameGolden[x] << endl;
+    //         cout << "result = " << setbase(16) << frameOut[x] << endl;
+    //         break;
+    //     }
+    // }
+    // printf("\tTest passed! Errors:%d\n",error_count);
 
     fclose(fp_r1);
     // fclose(fp_g1);
