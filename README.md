@@ -1,89 +1,107 @@
 # ISP C++
 ## 项目结构
 ```
+|-- README.md
 |-- config
-|   `-- ISP.cfg                          全局配置文件，自定义每个ISP模块的参数
-|-- include                              全局头文件，主要包含结构体定义
-|   |-- ac_channel.h
-|   |-- ac_int.h
+|   `-- ISP.cfg
+|-- include
+|   |-- aec.h
 |   |-- afc.h
+|   |-- ap_common.h
+|   |-- ap_decl.h
+|   |-- ap_fixed.h
+|   |-- ap_fixed_base.h
+|   |-- ap_fixed_ref.h
+|   |-- ap_fixed_special.h
+|   |-- ap_int.h
+|   |-- ap_int_base.h
+|   |-- ap_int_ref.h
+|   |-- ap_int_special.h
 |   |-- awb.h
 |   |-- cac.h
 |   |-- cmc.h
 |   |-- crop.h
 |   |-- csc.h
+|   |-- dehaze.h
 |   |-- demosaic.h
 |   |-- dgain.h
 |   |-- dpc.h
 |   |-- ee.h
+|   |-- etc
+|   |   `-- ap_private.h
 |   |-- file_define.h
 |   |-- gb.h
 |   |-- gtm.h
+|   |-- hls_stream.h
 |   |-- isp_top.h
 |   |-- lsc.h
 |   |-- ltm.h
 |   |-- lut.h
 |   |-- rawdns.h
 |   |-- scaledown.h
-|   |-- sde.h
+|   |-- tnr.h
 |   |-- top.h
 |   |-- tpg.h
 |   |-- wbc.h
 |   |-- yfc.h
 |   `-- yuvdns.h
-|-- input                                  输入文件以及产生的中间文件
+|-- input
 |   `-- input.raw
-|-- src                                     源文件，包含模块的实现
+|-- src
+|   |-- aec.cpp
 |   |-- afc.cpp
 |   |-- awb.cpp
 |   |-- cac.cpp
 |   |-- cmc.cpp
 |   |-- crop.cpp
 |   |-- csc.cpp
+|   |-- dehaze.cpp
 |   |-- demosaic.cpp
 |   |-- dgain.cpp
 |   |-- dpc.cpp
 |   |-- ee.cpp
 |   |-- gb.cpp
 |   |-- gtm.cpp
-|   |-- isp_top.cpp
 |   |-- lsc.cpp
 |   |-- ltm.cpp
 |   |-- lut.cpp
 |   |-- rawdns.cpp
 |   |-- scaledown.cpp
 |   |-- sde.cpp
+|   |-- tnr.cpp
 |   |-- tpg.cpp
 |   |-- wbc.cpp
 |   |-- yfc.cpp
 |   `-- yuvdns.cpp
-|-- test                                    单模块测试文件
-|   |-- Makefile 
-|   |-- afc
-|   |-- afc.cpp
-|   |-- cac.cpp
-|   |-- cmc.cpp
-|   |-- crop.cpp
-|   |-- csc.cpp
-|   |-- demosaic.cpp
-|   |-- dgain.cpp
-|   |-- dpc.cpp
-|   |-- ee.cpp
-|   |-- gb.cpp
-|   |-- gtm.cpp
-|   |-- isp_top.cpp
-|   |-- lsc.cpp
-|   |-- ltm.cpp
-|   |-- lut.cpp
-|   |-- rawdns.cpp
-|   |-- scaledown.cpp
-|   |-- sde.cpp
-|   |-- tpg.cpp
-|   |-- wbc.cpp
-|   |-- yfc.cpp
-|   `-- yuvdns.cpp
+`-- test
+    |-- Makefile
+    |-- aec.cpp
+    |-- afc.cpp
+    |-- awb.cpp
+    |-- cac.cpp
+    |-- cmc.cpp
+    |-- crop.cpp
+    |-- csc.cpp
+    |-- dehaze.cpp
+    |-- demosaic.cpp
+    |-- dgain.cpp
+    |-- dpc.cpp
+    |-- ee.cpp
+    |-- gb.cpp
+    |-- gtm.cpp
+    |-- lsc.cpp
+    |-- ltm.cpp
+    |-- lut.cpp
+    |-- rawdns.cpp
+    |-- scaledown.cpp
+    |-- top.cpp
+    |-- tpg.cpp
+    |-- wbc.cpp
+    |-- yfc.cpp
+    `-- yuvdns.cpp
 ```
-5 directories, 78 files
+
+6 directories, 92 files
 ## 参数解释
 1. Bayer阵列排布方式  
    这里使用2bit数据来表示：  
