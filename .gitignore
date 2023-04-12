@@ -1,1 +1,12 @@
-.vscode/
+*
+
+!/config/
+!/include/
+!/include/**/
+!/input/input.raw
+!/src/
+!/test/
+
+!*.cpp
+!*.h
+!Makefile
