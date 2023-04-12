@@ -3,10 +3,10 @@
 !/config/
 !/include/
 !/include/**/
-/input/*
 !/input/input.raw
 !/src/
 !/test/
+!/test/isp.sh
 
 !*.cpp
 !*.h
