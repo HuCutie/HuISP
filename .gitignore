@@ -3,6 +3,7 @@
 !/config/
 !/include/
 !/include/**/
+/input/*
 !/input/input.raw
 !/src/
 !/test/
