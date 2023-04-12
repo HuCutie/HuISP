@@ -1,101 +1,174 @@
 #include "../include/ee.h"
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-    top_register topParam;
-    ee_register ee_param;
-    hls::stream<uint36> src("input_stream");
-    hls::stream<uint36> dst("output_stream");
-    int x;
-    ee_pixel_t pix;
+	top_register topParam;
+	ee_register ee_param;
+	hls::stream<uint36> src("input_stream");
+	hls::stream<uint36> dst("output_stream");
+	int x;
+	ee_pixel_t pix;
 
-    printf("\tTest for ISP edge_enhancement module!\n");
-    memset(&topParam, 0, sizeof(top_register));
-    memset(&ee_param, 0, sizeof(ee_register));
+	printf("\tTest for ISP edge_enhancement module!\n");
+	memset(&topParam, 0, sizeof(top_register));
+	memset(&ee_param, 0, sizeof(ee_register));
 
-    topParam.frameWidth = 640;
-    topParam.frameHeight = 480;
+	const char *config_file = "../config/ISP.cfg";
 
-    ee_param.eb = 1;
-    ee_param.coeff = 30;
+	char buf[100] = "";
+	FILE *fp_config = fopen((const char *)config_file, "r");
+	char *p, *q;
+	char key[100], value[100];
 
-    uint64_t* frameIn = (uint64_t*)malloc(topParam.frameWidth * topParam.frameHeight * sizeof(uint64_t));
-    uint64_t* frameGolden = (uint64_t*)malloc(topParam.frameWidth * topParam.frameHeight * sizeof(uint64_t));
-    uint64_t* frameOut = (uint64_t*)malloc(topParam.frameWidth * topParam.frameHeight * sizeof(uint64_t));
+	if (fp_config == NULL)
+	{
+		printf("\t Warning: no configuration file!\n");
+		printf("\t Will use default initial values!\n");
+		topParam.frameWidth = 640;
+		topParam.frameHeight = 480;
+		topParam.imgPattern = 3;
+		topParam.blc = 0;
 
-    //In
-    FILE *fp_r1 = fopen(EE_SRC, "r");
-    if(!fp_r1){
-        printf("Can not open input file!\n");
-    }
+		ee_param.eb = 1;
+		ee_param.coeff = 30;
+	}
+	else
+	{
+		while (fgets(buf, 100, fp_config))
+		{
+			p = strchr(buf, '=');
+			q = strchr(buf, '\n');
+			if (p != NULL && q != NULL)
+			{
+				*q = '\0';
+				strncpy(key, buf, p - buf);
+				strcpy(value, p + 1);
 
-    for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {
-        fread(&frameIn[x], sizeof(uint64_t), 1, fp_r1);
-        uint64_t srcdata = frameIn[x];
-        uint36 in;
+				if (strstr(key, "frame_width"))
+				{
+					topParam.frameWidth = atoi(value);
+					printf("frame_width = %d\n", int(topParam.frameWidth));
+					continue;
+				}
 
-        pix.r = (uint12)(srcdata);
-        pix.g = (uint12)((srcdata>>16)&0xfff);
-        pix.b = (uint12) ((srcdata>>32)&0xfff);
+				if (strstr(key, "frame_height"))
+				{
+					topParam.frameHeight = atoi(value);
+					printf("frame_height = %d\n", int(topParam.frameHeight));
+					continue;
+				}
 
-        in = ((uint36) pix.r << 24)|((uint36) pix.g << 12)|((uint36) pix.b);
-        src << in;
-    }
-    printf("\tInit done!\n");
+				if (strstr(key, "image_pattern"))
+				{
+					topParam.imgPattern = atoi(value);
+					printf("image_pattern = %d\n", int(topParam.imgPattern));
+					continue;
+				}
 
-    //Golden
-    // FILE *fp_g1 = fopen(EE_GOLDEN, "r");
-    // if(!fp_g1){
-    //     printf("Can not open golden file!\n");
-    // }
+				if (strstr(key, "blc"))
+				{
+					topParam.blc = atoi(value);
+					printf("blc = %d\n", int(topParam.blc));
+					continue;
+				}
 
-    // for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {
-    //     fread(&frameGolden[x], sizeof(uint64_t), 1, fp_g1);
-    // }
-    printf("\tEnvironment set up!\n");
+				if(strstr(key, "ee_enable"))
+                {
+                    ee_param.eb = atoi(value);
+                    printf("ee_enable = %d\n", int(ee_param.eb));
+                    continue;
+                }
+
+                if(strstr(key, "ee_coeff"))
+                {
+                    ee_param.coeff = atoi(value);
+                    printf("ee_coeff = %d\n", int(ee_param.coeff));
+                    continue;
+                }
+			}
+		}
+	}
 
 
-    //Execution
-    edgeenhancement(topParam, ee_param, src, dst);
-    printf("\tExecution completed!\n");
+	uint64_t *frameIn = (uint64_t *)malloc(topParam.frameWidth * topParam.frameHeight * sizeof(uint64_t));
+	// uint64_t *frameGolden = (uint64_t *)malloc(topParam.frameWidth * topParam.frameHeight * sizeof(uint64_t));
+	uint64_t *frameOut = (uint64_t *)malloc(topParam.frameWidth * topParam.frameHeight * sizeof(uint64_t));
 
-    //Out
-    FILE *fp_w1 = fopen(EE_DST, "w");
-    if(!fp_w1){
-        printf("\tCan not open write back file!\n");
-    }
+	// In
+	FILE *fp_r1 = fopen(EE_SRC, "r");
+	if (!fp_r1)
+	{
+		printf("Can not open input file!\n");
+	}
 
-    for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {
-        uint64_t dstdata = 0;
-        uint36 out;
-        dst >> out;
+	for (x = 0; x < topParam.frameWidth * topParam.frameHeight; x++)
+	{
+		fread(&frameIn[x], sizeof(uint64_t), 1, fp_r1);
+		uint64_t srcdata = frameIn[x];
+		uint36 in;
 
-        pix.r = out(35,24);
-        pix.g = out(23,12);
-        pix.b = out(11,0);
+		pix.r = (uint12)(srcdata);
+		pix.g = (uint12)((srcdata >> 16) & 0xfff);
+		pix.b = (uint12)((srcdata >> 32) & 0xfff);
 
-        dstdata = ((uint64_t)(pix.r)) |((uint64_t)(pix.g) << 16) | ((uint64_t)(pix.b) << 32);
-        frameOut[x] = dstdata;
-    }
+		in = ((uint36)pix.r << 24) | ((uint36)pix.g << 12) | ((uint36)pix.b);
+		src << in;
+	}
+	printf("\tInit done!\n");
 
-    fwrite(frameOut, sizeof(uint64_t), (topParam.frameWidth * topParam.frameHeight), fp_w1);
+	// Golden
+	//  FILE *fp_g1 = fopen(EE_GOLDEN, "r");
+	//  if(!fp_g1){
+	//      printf("Can not open golden file!\n");
+	//  }
 
-    //Checker
-    // for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {
-    //     if(frameGolden[x] != frameOut[x]) {
-    //         printf("\t\tFirst mismatch in pixel %d!\n", x);
-    //         printf("\t\tGolden_r = %d, result_r = %d!\n",(uint16_t)(frameGolden[x]), (uint16_t)(frameOut[x]));
-    //         printf("\t\tGolden_g = %d, result_g = %d!\n",(uint16_t)(frameGolden[x]>>16), (uint16_t)(frameOut[x]>>16));
-    //         printf("\t\tGolden_b = %d, result_b = %d!\n",(uint16_t)(frameGolden[x]>>32), (uint16_t)(frameOut[x]>>32));
-    //         break;
-    //     }
-    // }
+	// for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {
+	//     fread(&frameGolden[x], sizeof(uint64_t), 1, fp_g1);
+	// }
+	printf("\tEnvironment set up!\n");
 
-    // printf("\tTest passed!\n");
+	// Execution
+	edgeenhancement(topParam, ee_param, src, dst);
+	printf("\tExecution completed!\n");
 
-    fclose(fp_r1);
-    // fclose(fp_g1);
-    fclose(fp_w1);
-    return 0;
+	// Out
+	FILE *fp_w1 = fopen(EE_DST, "w");
+	if (!fp_w1)
+	{
+		printf("\tCan not open write back file!\n");
+	}
+
+	for (x = 0; x < topParam.frameWidth * topParam.frameHeight; x++)
+	{
+		uint64_t dstdata = 0;
+		uint36 out;
+		dst >> out;
+
+		pix.r = out(35, 24);
+		pix.g = out(23, 12);
+		pix.b = out(11, 0);
+
+		dstdata = ((uint64_t)(pix.r)) | ((uint64_t)(pix.g) << 16) | ((uint64_t)(pix.b) << 32);
+		frameOut[x] = dstdata;
+	}
+
+	fwrite(frameOut, sizeof(uint64_t), (topParam.frameWidth * topParam.frameHeight), fp_w1);
+
+	// Checker
+	//  for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {
+	//      if(frameGolden[x] != frameOut[x]) {
+	//          printf("\t\tFirst mismatch in pixel %d!\n", x);
+	//          printf("\t\tGolden_r = %d, result_r = %d!\n",(uint16_t)(frameGolden[x]), (uint16_t)(frameOut[x]));
+	//          printf("\t\tGolden_g = %d, result_g = %d!\n",(uint16_t)(frameGolden[x]>>16), (uint16_t)(frameOut[x]>>16));
+	//          printf("\t\tGolden_b = %d, result_b = %d!\n",(uint16_t)(frameGolden[x]>>32), (uint16_t)(frameOut[x]>>32));
+	//          break;
+	//      }
+	//  }
+
+	// printf("\tTest passed!\n");
+
+	fclose(fp_r1);
+	// fclose(fp_g1);
+	fclose(fp_w1);
+	return 0;
 }
-
