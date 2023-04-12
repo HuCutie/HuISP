@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "---------start isp pipeline---------"
+./tpg
+./dgain
+./lsc
+./dpc
+./rawdns
+./awb
+./wbc
+./gb
+./demosaic
+./ee
+./cmc
+./aec
+./gtm
+./ltm
+./cac
