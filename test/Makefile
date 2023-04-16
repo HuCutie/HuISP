@@ -58,4 +58,4 @@ all: tpg dgain lsc dpc rawdns awb wbc gb demosaic ee cmc gtm ltm cac csc yfc yuv
 isp: tpg dgain lsc dpc rawdns awb wbc gb demosaic ee cmc gtm ltm cac
 
 clean:
-	rm tpg dgain lsc dpc rawdns awb wbc gb demosaic ee cmc gtm ltm cac isp top
+	rm tpg dgain lsc dpc rawdns awb wbc gb demosaic ee cmc gtm ltm cac isp
