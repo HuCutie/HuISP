@@ -205,3 +205,72 @@ void isp_top(stream_u12 &src,
     crop(top_reg, crop_reg, scale_crop_data_y, scale_crop_data_u, scale_crop_data_v, dst_y, dst_u, dst_v);
     store_out(crop_reg,dst_y,dst_u,dst_v,y_ptr,u_ptr,v_ptr);
 };
+
+void isp_top(stream_u12 &src,
+			 stream_u42 &dst,
+	        //  uint16* y_ptr,
+	        //  uint16* u_ptr,
+            //  uint16* v_ptr,
+             //stream_u10 &dst_y,
+             //stream_u10 &dst_u,
+             //stream_u10 &dst_v,
+             top_register top_reg,
+             tpg_register tpg_reg,
+             dgain_register dgain_reg,
+             lsc_register lsc_reg,
+             dpc_register dpc_reg,
+             rawdns_register rawdns_reg,
+             awb_register awb_reg,
+             wbc_register wbc_reg,
+             gb_register gb_reg,
+             demosaic_register demosaic_reg,
+             ee_register ee_reg,
+             cmc_register cmc_reg,
+             gtm_register gtm_reg,
+             ltm_register ltm_reg,
+             cac_register cac_reg)
+{
+	stream_u12 tpg_dgain_data;
+    stream_u12 dgain_lsc_data;
+    stream_u12 lsc_dpc_data;
+    stream_u12 dpc_rawdns_data;
+    stream_u12 rawdns_awb_data;
+    stream_u12 awb_wbc_data;
+    stream_u12 wbc_gb_data;
+    stream_u12 gb_demosaic_data;
+    stream_u36 demosaic_ee_data;
+    stream_u36 ee_cmc_data;
+    stream_u42 cmc_gtm_data;
+    stream_u42 gtm_ltm_data;
+    stream_u42 ltm_cac_data;
+    // stream_u42 cac_csc_data;
+
+	cout << "Starting executing tpd module..." << endl;
+    tpg(top_reg, tpg_reg, src, tpg_dgain_data);
+	cout << "Starting executing dgain module..." << endl;
+    dgain(top_reg, dgain_reg, tpg_dgain_data, dgain_lsc_data);
+	cout << "Starting executing lsc module..." << endl;
+    lsc(top_reg, lsc_reg, dgain_lsc_data, lsc_dpc_data);
+	cout << "Starting executing dpc module..." << endl;
+    dpc(top_reg, dpc_reg, lsc_dpc_data, dpc_rawdns_data);
+	cout << "Starting executing rawdns module..." << endl;
+    isp_rawdns(top_reg, rawdns_reg, dpc_rawdns_data, rawdns_awb_data);
+	cout << "Starting executing awb module..." << endl;
+    awb(top_reg, awb_reg, rawdns_awb_data, awb_wbc_data);
+	cout << "Starting executing wbc module..." << endl;
+    wbc(top_reg, wbc_reg, awb_wbc_data, wbc_gb_data);
+	cout << "Starting executing gb module..." << endl;
+    greenbalance2(top_reg, gb_reg, wbc_gb_data, gb_demosaic_data);
+	cout << "Starting executing demosaic module..." << endl;
+    demosaic(top_reg, demosaic_reg, gb_demosaic_data, demosaic_ee_data);
+	cout << "Starting executing ee module..." << endl;
+    edgeenhancement(top_reg, ee_reg, demosaic_ee_data, ee_cmc_data);
+	cout << "Starting executing cmc module..." << endl;
+    cmc(top_reg, cmc_reg, ee_cmc_data, cmc_gtm_data);
+	cout << "Starting executing gtm module..." << endl;
+    gtm(top_reg, gtm_reg, cmc_gtm_data, gtm_ltm_data);
+	cout << "Starting executing ltm module..." << endl;
+    ltm(top_reg,ltm_reg,gtm_ltm_data,ltm_cac_data);
+	cout << "Starting executing cac module..." << endl;
+    cac(top_reg, cac_reg, ltm_cac_data, dst);
+}

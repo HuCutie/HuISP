@@ -141,18 +141,20 @@ int main(int argc, char **argv)
 	//     fread(&frameGolden[x], sizeof(uint16_t), 1, fp_g1);
 	// }
 	printf("\tEnvironment set up!\n");
+
 	// Execution
 	ltm(topParam, ltm_param, src, dst);
+
 	printf("\tExecution completed!\n");
 	printf("\t%d\n", int(dst.size()));
+	
 	// Out
 	FILE *fp_w1 = fopen(LTM_DST1, "w");
 	if (!fp_w1)
 	{
 		printf("\tCan not open write back file!\n");
 	}
-	topParam.frameHeight = 480;
-	topParam.frameWidth = 640;
+
 	for (x = 0; x < topParam.frameWidth * topParam.frameHeight; x++)
 	{
 		dstdata = dst.read();

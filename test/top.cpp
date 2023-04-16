@@ -840,7 +840,29 @@ int main(int argc, char** argv)
     printf("\tEnvironment set up!\n");
 
     //Execution
-    isp_top(src, dst_y, dst_u, dst_v, 
+    // isp_top(src, dst_y, dst_u, dst_v, 
+    //         topParam, 
+    //         tpg_param, 
+    //         dgain_param, 
+    //         lsc_param, 
+    //         dpc_param,
+    //         rawdns_param,
+    //         awb_param,
+    //         wbc_param, 
+    //         gb_param, 
+    //         demosaic_param, 
+    //         ee_param,
+    //         cmc_param, 
+    //         gtm_param, 
+    //         ltm_param, 
+    //         cac_param,
+    //         csc_param, 
+    //         yfc_param,
+    //         yuvdns_param,
+    //         scaledown_param, 
+    //         crop_param);
+	stream_u42 dst;
+    isp_top(src, dst,
             topParam, 
             tpg_param, 
             dgain_param, 
@@ -855,12 +877,7 @@ int main(int argc, char** argv)
             cmc_param, 
             gtm_param, 
             ltm_param, 
-            cac_param,
-            csc_param, 
-            yfc_param,
-            yuvdns_param,
-            scaledown_param, 
-            crop_param);
+            cac_param);
 
     printf("\tExecution completed!\n");
     //printf("\tY component size:%d\n",dst_y.size());
@@ -868,30 +885,47 @@ int main(int argc, char** argv)
     //printf("\tV component size:%d\n",dst_v.size());
 
     //Out
-    FILE *fp_w1 = fopen(TOP_DST1, "w");
+    // FILE *fp_w1 = fopen(TOP_DST1, "w");
+	FILE *fp_w1 = fopen(CAC_DST1, "w");
     if(!fp_w1){
         printf("\tCan not open write back file!\n");
     }
 
-    for (x = 0; x < 3 * output_width * output_height; x++) {
-        if(x < output_width * output_height)
-        {
-            y_o = dst_y[x%(output_width*output_height)];//dst_y.read();
-            frameOut[x] = y_o;
-        }
-        else if(x < 2 * output_width * output_height)
-        {
-            u_o =  dst_u[x%(output_width*output_height)];//dst_u.read();
-            frameOut[x] = u_o;
-        }
-        else
-        {
-            v_o =  dst_v[x%(output_width*output_height)];//dst_v.read();
-            frameOut[x] = v_o;
-        }
-    }
+    // for (x = 0; x < 3 * output_width * output_height; x++) {
+    //     if(x < output_width * output_height)
+    //     {
+    //         y_o = dst_y[x%(output_width*output_height)];//dst_y.read();
+    //         frameOut[x] = y_o;
+    //     }
+    //     else if(x < 2 * output_width * output_height)
+    //     {
+    //         u_o =  dst_u[x%(output_width*output_height)];//dst_u.read();
+    //         frameOut[x] = u_o;
+    //     }
+    //     else
+    //     {
+    //         v_o =  dst_v[x%(output_width*output_height)];//dst_v.read();
+    //         frameOut[x] = v_o;
+    //     }
+    // }
 
-    fwrite(frameOut, sizeof(uint16_t), (3 * output_width * output_height), fp_w1);
+    // fwrite(frameOut, sizeof(uint16_t), (3 * output_width * output_height), fp_w1);
+
+	uint14 red_o;
+	uint14 green_o;
+	uint14 blue_o;
+	for (x = 0; x < topParam.frameWidth * topParam.frameHeight; x++)
+	{
+		dstdata = dst.read();
+		red_o = dstdata >> 28;
+		green_o = dstdata(27, 14);
+		blue_o = dstdata(13, 0);
+		frameOut[3 * x] = red_o;
+		frameOut[3 * x + 1] = green_o;
+		frameOut[3 * x + 2] = blue_o;
+	}
+
+	fwrite(frameOut, sizeof(uint16_t), 3 * (topParam.frameWidth * topParam.frameHeight), fp_w1);
 
     //Checker
     // for (x = 0; x < 3 * output_width * output_height; x++) {

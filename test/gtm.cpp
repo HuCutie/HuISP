@@ -194,7 +194,7 @@ int main(int argc, char **argv)
 		frameOut[3 * x + 2] = blue_o;
 	}
 
-	fwrite(frameOut, sizeof(uint16_t), (topParam.frameWidth * topParam.frameHeight), fp_w1);
+	fwrite(frameOut, sizeof(uint16_t), 3*(topParam.frameWidth * topParam.frameHeight), fp_w1);
 
 	// Checker
 	//  for (x = 0; x < topParam.frameWidth*topParam.frameHeight; x++) {

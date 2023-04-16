@@ -31,27 +31,31 @@ ltm:
 cac:
 	g++ cac.cpp $(src)cac.cpp -o cac
 
-afc:
-	g++ afc.cpp $(src)afc.cpp -o afc
-crop:
-	g++ crop.cpp $(src)crop.cpp -o crop
+
 csc:
 	g++ csc.cpp $(src)csc.cpp -o csc
-lut:
-	g++ lut.cpp $(src)lut.cpp -o lut
-scaledown:
-	g++ scaledown.cpp $(src)scaledown.cpp -o scaledown
-sde:
-	g++ sde.cpp $(src)sde.cpp -o sde
 yfc:
 	g++ yfc.cpp $(src)yfc.cpp -o yfc
 yuvdns:
 	g++ yuvdns.cpp $(src)yuvdns.cpp -o yuvdns
+scaledown:
+	g++ scaledown.cpp $(src)scaledown.cpp -o scaledown
+crop:
+	g++ crop.cpp $(src)crop.cpp -o crop
+
+afc:
+	g++ afc.cpp $(src)afc.cpp -o afc
+lut:
+	g++ lut.cpp $(src)lut.cpp -o lut
+sde:
+	g++ sde.cpp $(src)sde.cpp -o sde
 
 top:
 	g++ top.cpp $(src)*.cpp -o top
 
-isp: tpg dgain lsc dpc rawdns awb wbc gb demosaic ee cmc aec gtm ltm cac
+all: tpg dgain lsc dpc rawdns awb wbc gb demosaic ee cmc gtm ltm cac csc yfc yuvdns scaledown crop
+
+isp: tpg dgain lsc dpc rawdns awb wbc gb demosaic ee cmc gtm ltm cac
 
 clean:
-	rm aec afc awb cac cmc crop csc demosaic dgain dpc ee gb gtm lsc ltm lut rawdns scaledown sde tpg wbc yfc yuvdns top isp
+	rm tpg dgain lsc dpc rawdns awb wbc gb demosaic ee cmc gtm ltm cac isp top
