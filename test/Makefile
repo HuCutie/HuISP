@@ -1,35 +1,35 @@
 src = ../src/
 
 tpg:
-	g++ tpg.cpp $(src)tpg.cpp -o tpg
+	g++ -pg tpg.cpp $(src)tpg.cpp -o tpg
 dgain:
-	g++ dgain.cpp $(src)dgain.cpp -o dgain
+	g++ -pg dgain.cpp $(src)dgain.cpp -o dgain
 lsc:
-	g++ lsc.cpp $(src)lsc.cpp -o lsc
+	g++ -pg lsc.cpp $(src)lsc.cpp -o lsc
 dpc:
-	g++ dpc.cpp $(src)dpc.cpp -o dpc
+	g++ -pg dpc.cpp $(src)dpc.cpp -o dpc
 rawdns:
-	g++ rawdns.cpp $(src)rawdns.cpp -o rawdns
+	g++ -pg rawdns.cpp $(src)rawdns.cpp -o rawdns
 awb:
-	g++ awb.cpp $(src)awb.cpp -o awb
+	g++ -pg awb.cpp $(src)awb.cpp -o awb
 wbc:
-	g++ wbc.cpp $(src)wbc.cpp -o wbc
+	g++ -pg wbc.cpp $(src)wbc.cpp -o wbc
 gb:
-	g++ gb.cpp $(src)gb.cpp -o gb
+	g++ -pg gb.cpp $(src)gb.cpp -o gb
 demosaic:
-	g++ demosaic.cpp $(src)demosaic.cpp -o demosaic
+	g++ -pg demosaic.cpp $(src)demosaic.cpp -o demosaic
 ee:
-	g++ ee.cpp $(src)ee.cpp -o ee
+	g++ -pg ee.cpp $(src)ee.cpp -o ee
 cmc:
-	g++ cmc.cpp $(src)cmc.cpp -o cmc
+	g++ -pg cmc.cpp $(src)cmc.cpp -o cmc
 aec:
-	g++ aec.cpp $(src)aec.cpp -o aec
+	g++ -pg aec.cpp $(src)aec.cpp -o aec
 gtm:
-	g++ gtm.cpp $(src)gtm.cpp -o gtm
+	g++ -pg gtm.cpp $(src)gtm.cpp -o gtm
 ltm:
-	g++ ltm.cpp $(src)ltm.cpp -o ltm
+	g++ -pg ltm.cpp $(src)ltm.cpp -o ltm
 cac:
-	g++ cac.cpp $(src)cac.cpp -o cac
+	g++ -pg cac.cpp $(src)cac.cpp -o cac
 
 
 csc:
